@@ -24,7 +24,6 @@ public class CentralStation extends Subject{
 		intializeMission();
 		startRovers();
 		boolean missionIncomplete = true;
-		int timer = TIMER;
 		while (missionIncomplete) {
 			if (mainEnvironment.percentageVisited() > 70 ) {
 				stopRovers();
