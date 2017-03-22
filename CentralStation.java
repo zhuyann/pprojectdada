@@ -8,23 +8,15 @@ public class CentralStation extends Subject{
 	Environment mainEnvironment;
 	RoverFactory roverFactory;
 	
+	Rover rover1;
+	Rover rover2;
+	Rover rover3;
+	Rover rover4;
+	
 	
 	CentralStation() {
+		pictureArray = new BufferedImage[100];
 	}
-	
-	public void runMission () {
-		intializeMission();
-		startRovers();
-		boolean missionIncomplete = true;
-		while (missionIncomplete) {
-			if (mainEnvironment.percentageVisited() > 70 ) {
-				stopRovers();
-				missionIncomplete = false;
-			}
- 
-		}
-		System.out.println("Mission complete!");
-	}	
 
 	
 	void intializeMission() {
@@ -36,12 +28,10 @@ public class CentralStation extends Subject{
 		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell);
 		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell);
 		
-		Rover rover1 = roverFactory.getRoverType("rover1", cell1);
-		Rover rover2 = roverFactory.getRoverType("rover2", cell2);
-		Rover rover3 = roverFactory.getRoverType("rover3", cell3);
-		Rover rover4 = roverFactory.getRoverType("rover4", cell4);
-		
-		//put rovers in an array as observers.
+		rover1 = roverFactory.getRoverType("rover1", cell1, State.STILL);
+		rover2 = roverFactory.getRoverType("rover2", cell2, State.STILL);
+		rover3 = roverFactory.getRoverType("rover3", cell3, State.STILL);
+		rover4 = roverFactory.getRoverType("rover4", cell4, State.STILL);
 		
 		attach(rover1);
 		attach(rover2);
@@ -51,11 +41,17 @@ public class CentralStation extends Subject{
 	
 	
 	void startRovers() {
-		//start rovers
+		rover1.start();
+		rover2.start();
+		rover3.start();
+		rover4.start();
 	}
 	
 	void stopRovers() {
-		//stop rovers
+		rover1.stop();
+		rover2.stop();
+		rover3.stop();
+		rover4.stop();
 	}
 	
 	void savePicture() {
