@@ -8,11 +8,9 @@ public class RoverFactory {
 	}
 
 
-	Rover getRoverType(String type, Environment cell) {
-		if(!(type.contentEquals("CAMERAROVER"))) {
-			return null;
-		} 
-		return new Rover(cell);
+	Rover getRoverType(String name, Environment cell) {
+		
+		return new Rover(name, cell);
 
 	}
 
