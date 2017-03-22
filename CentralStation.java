@@ -20,6 +20,20 @@ public class CentralStation extends Subject{
 		pictureArray = new BufferedImage[100];
 	}
 
+	public void runMission () {
+		intializeMission();
+		startRovers();
+		boolean missionIncomplete = true;
+		int timer = TIMER;
+		while (missionIncomplete) {
+			if (mainEnvironment.percentageVisited() > 70 ) {
+				stopRovers();
+				missionIncomplete = false;
+			}
+ 
+		}
+		System.out.println("Mission complete!");
+	}
 	
 	void intializeMission() {
 		int lengthOfEachCell = mainEnvironment.length / 2;
