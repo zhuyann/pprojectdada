@@ -11,6 +11,20 @@ public class CentralStation extends Subject{
 	
 	CentralStation() {
 	}
+	
+	public void runMission () {
+		intializeMission();
+		startRovers();
+		boolean missionIncomplete = true;
+		while (missionIncomplete) {
+			if (mainEnvironment.percentageVisited() > 70 ) {
+				stopRovers();
+				missionIncomplete = false;
+			}
+ 
+		}
+		System.out.println("Mission complete!");
+	}	
 
 	
 	void intializeMission() {
