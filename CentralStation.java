@@ -8,10 +8,12 @@ public class CentralStation extends Subject{
 	Environment mainEnvironment;
 	RoverFactory roverFactory;
 	String typeOfRover;
+	State state;
 	
 	
 	CentralStation() {
 		typeOfRover = "CAMERAROVER";
+		state = State.STILL;
 	}
 
 	
