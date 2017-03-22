@@ -4,10 +4,12 @@ public class Rover extends Observer{
 	
 	String name;
 	Environment myCell;
+	State state;
 
 	Rover(String name, Environment cell) {
 		this.name = name;
 		myCell = cell;
+		state
 		
 	}
 	
