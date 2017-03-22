@@ -7,10 +7,11 @@ public class CentralStation extends Subject{
 	BufferedImage[] pictureArray;
 	Environment mainEnvironment;
 	RoverFactory roverFactory;
+	State state;
 	
 	
 	CentralStation() {
-		
+		state = State.STILL;
 	}
 
 	
