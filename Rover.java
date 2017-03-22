@@ -1,15 +1,16 @@
 package rovuSystem;
 
+
 public class Rover extends Observer{
 	
 	String name;
 	Environment myCell;
 	State state;
 
-	Rover(String name, Environment cell) {
+	Rover(String name, Environment cell, State initialState) {
 		this.name = name;
 		myCell = cell;
-		state
+		state = initialState;
 		
 	}
 	
@@ -20,10 +21,12 @@ public class Rover extends Observer{
 	
 	void start() {
 		//start rover
+		state = State.MOVING;
 	}
 	
 	void stop() {
 		//stop rover
+		state = State.STILL;
 	}
 	
 	void avoidCollision() {
