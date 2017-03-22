@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 
 public class CentralStation extends Subject{
 	
+	final static int TIMER = 60;
+	
 	BufferedImage[] pictureArray;
 	Environment mainEnvironment;
 	RoverFactory roverFactory;
