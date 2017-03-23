@@ -1,10 +1,13 @@
 package rovuSystem;
 
 import java.awt.image.BufferedImage;
+import java.util.Timer;
+import 	java.util.TimerTask;
 
 public class CentralStation extends Subject{
 	
-	final static int TIMER = 60;
+	int timer = 60;
+	double currentPercentageVisited;
 	
 	BufferedImage[] pictureArray;
 	int lengthOfPictureArray;
@@ -33,13 +36,29 @@ public class CentralStation extends Subject{
 		startRovers();
 		boolean missionIncomplete = true;
 		while (missionIncomplete) {
-			if (mainEnvironment.percentageVisited() > 70 ) {
-				stopRovers();
+			if (mainEnvironment.percentageVisited() >= 70.0 ) {
 				missionIncomplete = false;
 			}
- 
 		}
-		System.out.println("Mission complete!");
+		
+		currentPercentageVisited = mainEnvironment.percentageVisited();
+		int test = 0;
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+	        @Override
+	        public void run() {
+	        	if (timer != 0 && currentPercentageVisited == mainEnvironment.percentageVisited()) {
+	        		timer -= 1;
+	        	} else
+	        	if (timer != 0 && currentPercentageVisited != mainEnvironment.percentageVisited()) {
+	        		currentPercentageVisited = mainEnvironment.percentageVisited();
+	        		timer = 60;
+	        	} else {
+	        		System.out.println("Mission complete!");
+	        		System.exit(1);
+	        	}
+	        }
+	    }, 1000);
 	}
 	
 	void intializeMission() {
