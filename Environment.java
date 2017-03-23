@@ -7,6 +7,7 @@ public class Environment {
 	int numberOfCoordinatesDefined;
 	int lengthOfCoordinatePool;
 	Coordinate[] coordinatePool;
+	Coordinate startingPoint;
 	
 	
 	Environment() {
@@ -20,6 +21,12 @@ public class Environment {
 	Environment(int length, int width) {
 		this.length = length;
 		this.width = width;
+	}
+	
+	Environment(int length, int width, Coordinate startingPoint) {
+		this.length = length;
+		this.width = width;
+		this.startingPoint = startingPoint;
 	}
 	
 	void defineCoordinates(Coordinate coordinate) {
