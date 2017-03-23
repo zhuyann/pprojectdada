@@ -1,5 +1,7 @@
 package rovuSystem;
 
+import java.awt.image.BufferedImage;
+import javax.vecmath.Vector3d;
 
 public class Rover extends Observer{
 	
