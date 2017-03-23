@@ -21,6 +21,7 @@ public class CentralStation extends Subject{
 		pictureArray = new BufferedImage[100];
 	}
 	
+	// for singleton implementation
 	public static CentralStation getInstance() {
 		return instance;
 	}
