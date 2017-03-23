@@ -6,11 +6,18 @@ public class Rover extends Observer{
 	String name;
 	Environment myCell;
 	State state;
+	RoverSimulator roverSim;
+	BufferedImage[] pictures;
+	int numberOfPictures;
 
 	Rover(String name, Environment cell, State initialState) {
 		this.name = name;
 		myCell = cell;
 		state = initialState;
+		
+		roverSim = new RoverSimulator(new Vector3d(0, 0, 0), name);
+		pictures = new BufferedImage[10];
+		numberOfPictures = 0;
 		
 	}
 	
@@ -20,17 +27,17 @@ public class Rover extends Observer{
 	}
 	
 	void start() {
-		//start rover
+		roverSim.initBehavior();
 		state = State.MOVING;
 	}
 	
 	void stop() {
-		//stop rover
+		roverSim.stopRover();
 		state = State.STILL;
 	}
 	
 	void avoidCollision() {
-		//if obstacle is detected, implement avoid collision algorithm
+		roverSim.performBehavior();
 	}
 	
 	void communicateWithTheCS() {
@@ -38,7 +45,9 @@ public class Rover extends Observer{
 	}
 	
 	void takeAndSendPhotos() {
-		
+		roverSim.takePhoto();
+		pictures = roverSim.picArray;
+		numberOfPictures = roverSim.picArray.length;
 	}
 	
 
