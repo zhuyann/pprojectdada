@@ -12,6 +12,11 @@ public class Coordinate {
 		
 	}
 	
+	Coordinate(int x, int y){
+		xValue = x;
+		yValue = y;	
+	}
+	
 	void translateCoordinates() {
 		//change GPS location to type Coordinate
 	}
