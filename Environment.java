@@ -41,8 +41,8 @@ public class Environment {
 	}
 	
 	
-	int percentageVisited() {
-		int percentage = (numberOfCoordinatesDefined-lengthOfCoordinatePool)/numberOfCoordinatesDefined * 100;
+	double percentageVisited() {
+		double percentage = (numberOfCoordinatesDefined-lengthOfCoordinatePool)/numberOfCoordinatesDefined * 100;
 		return percentage;
 	}
 	
