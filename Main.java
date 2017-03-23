@@ -17,6 +17,7 @@ public class Main {
         EnvironmentDescription environment = new ExampleEnvironment();
 		
 	//stuff
+	// create central station and let it do its thing
 	
 	// here we create an instance of the whole Simbad simulator and we assign the newly created environment 
         Simbad frame = new Simbad(environment, false);
