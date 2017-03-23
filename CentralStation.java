@@ -7,6 +7,7 @@ public class CentralStation extends Subject{
 	final static int TIMER = 60;
 	
 	BufferedImage[] pictureArray;
+	int lengthOfPictureArray;
 	Environment mainEnvironment;
 	RoverFactory roverFactory;
 	
@@ -18,7 +19,8 @@ public class CentralStation extends Subject{
 	private static CentralStation instance = new CentralStation();
 	
 	private CentralStation() {
-		pictureArray = new BufferedImage[100];
+		pictureArray = new BufferedImage[40];
+		lengthOfPictureArray = 0;
 	}
 	
 	// for singleton implementation
@@ -76,7 +78,17 @@ public class CentralStation extends Subject{
 	}
 	
 	void savePicture() {
+		System.arraycopy(rover1.pictures, 0, pictureArray, 0, rover1.numberOfPictures);
+		lengthOfPictureArray = rover1.numberOfPictures;
 		
+		System.arraycopy(rover2.pictures, 0, pictureArray, lengthOfPictureArray, rover2.numberOfPictures);
+		lengthOfPictureArray += rover2.numberOfPictures;
+		
+		System.arraycopy(rover3.pictures, 0, pictureArray, lengthOfPictureArray, rover3.numberOfPictures);
+		lengthOfPictureArray += rover3.numberOfPictures;
+		
+		System.arraycopy(rover4.pictures, 0, pictureArray, lengthOfPictureArray, rover4.numberOfPictures);
+		lengthOfPictureArray += rover4.numberOfPictures;
 	}
 	
 	void handleError() {
