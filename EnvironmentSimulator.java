@@ -1,3 +1,5 @@
+package rovuSystem;
+
 import java.awt.Color;
 
 import javax.vecmath.Color3f;
@@ -8,10 +10,13 @@ import simbad.sim.Box;
 import simbad.sim.EnvironmentDescription;
 import simbad.sim.Wall;
 
-public class ExampleEnvironment extends EnvironmentDescription {
-	public ExampleEnvironment() {
+public class EnvironmentSimulator extends EnvironmentDescription {
+	public EnvironmentSimulator() {
 		
-		// turn on the lights
+	//test rover added to the enviroment
+	add(new RoverSimulator(new Vector3d(0, 0, 0),"my robot"));
+		
+	// turn on the lights
         this.light1IsOn = true;
         this.light2IsOn = true;
         
@@ -22,9 +27,6 @@ public class ExampleEnvironment extends EnvironmentDescription {
         this.showAxis(true);
         
         this.setWorldSize(20);
-        
-        
-       
         
         Wall w1 = new Wall(new Vector3d(-5, 0, 0), 10, 2, this);
         w1.setColor(new Color3f(Color.BLUE));
@@ -62,4 +64,5 @@ public class ExampleEnvironment extends EnvironmentDescription {
         add(box2);
         
     }
+		
 }
