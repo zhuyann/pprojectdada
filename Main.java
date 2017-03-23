@@ -14,7 +14,7 @@ public class Main {
         System.setProperty("j3d.implicitAntialiasing", "true");
         
         // creation of the environment containing all obstacles and robots
-        EnvironmentDescription environment = new ExampleEnvironment();
+        EnvironmentDescription environment = new EnvironmentSimulator();
 		
 	// create a single instance of central station and let it do its thing
 	CentralStation centralStation = CentralStation.getInstance();
