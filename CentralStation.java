@@ -15,9 +15,14 @@ public class CentralStation extends Subject{
 	Rover rover3;
 	Rover rover4;
 	
+	private static CentralStation instance = new CentralStation();
 	
-	CentralStation() {
+	private CentralStation() {
 		pictureArray = new BufferedImage[100];
+	}
+	
+	public static CentralStation getInstance() {
+		return instance;
 	}
 
 	public void runMission () {
