@@ -17,7 +17,7 @@ public class Main {
 
 		System.setProperty("j3d.implicitAntialiasing", "true");
 
-		EnvironmentDescription environment = new EnvironmentSimulator();
+		EnvironmentSimulator environment = new EnvironmentSimulator();
 		CentralStation centralStation = CentralStation.getInstance(environment);
 		centralStation.intializeMission();
 		
