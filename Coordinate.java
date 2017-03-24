@@ -16,8 +16,4 @@ public class Coordinate {
 		xValue = x;
 		yValue = y;	
 	}
-	
-	void translateCoordinates() {
-		//change GPS location to type Coordinate
-	}
 }
