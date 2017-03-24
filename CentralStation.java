@@ -27,14 +27,15 @@ public class CentralStation extends Subject{
 	private static CentralStation instance = new CentralStation();
 	
 	private CentralStation() {
-		environmentSim = new EnvironmentSimulator();
 		pictureArray = new BufferedImage[40];
 		lengthOfPictureArray = 0;
-		System.out.println("Central Station live");
+		System.out.println("Central Station is initialized");
+
 	}
-	
+
 	// for singleton implementation
-	public static CentralStation getInstance() {	
+	public static CentralStation getInstance(EnvironmentDescription environment) {
+		environmentSim = environment;
 		return instance;
 	}
 
@@ -69,45 +70,29 @@ public class CentralStation extends Subject{
 	}
 	
 	void intializeMission() {
-		mainEnvironment = new Environment(10,10);
-		
+		Environment mainEnvironment = new Environment(10,10);
 		int lengthOfEachCell = mainEnvironment.length / 2;
 		int widthOfEachCell = mainEnvironment.width / 2;
-		
-		Environment cell1 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate (0,0));
-		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate (0,0 -widthOfEachCell));
-		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate (0 - lengthOfEachCell,0));
-		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate (0 - lengthOfEachCell,0 -widthOfEachCell));
-		
-		System.out.println("Cells are created");
-		
-		//rover1 = roverFactory.getRoverType("rover1", cell1, State.STILL, environmentSim);
-		
-		
-		ExampleRobot robot1 = new ExampleRobot(new Vector3d(0, 0, 0), "Robot 1");
-		environmentSim.add(robot1);
-		System.out.println("Rover1 alive");
-		ExampleRobot robot2 = new ExampleRobot(new Vector3d(1, 0, 0), "Robot 1");
-		environmentSim.add(robot2);
-		System.out.println("Rover2 alive");
-		ExampleRobot robot3 = new ExampleRobot(new Vector3d(0, 0, 1), "Robot 1");
-		environmentSim.add(robot3);
-		System.out.println("Rover3 alive");
-		ExampleRobot robot4 = new ExampleRobot(new Vector3d(1, 0, 1), "Robot 1");
-		environmentSim.add(robot4);
-		System.out.println("Rover4 alive");
-		
-		//rover2 = roverFactory.getRoverType("rover2", cell2, State.STILL);
-		//rover3 = roverFactory.getRoverType("rover3", cell3, State.STILL);
-		//rover4 = roverFactory.getRoverType("rover4", cell4, State.STILL);
 
-		//attach(rover1);
-		System.out.println("test1");
-		//attach(rover2);
-		//attach(rover3);
-		//attach(rover4);
+		Environment cell1 = new Environment(lengthOfEachCell, widthOfEachCell);
+		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell);
+		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell);
+		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell);
+
+		rover1 = new Rover(new RoverSimulator(new Vector3d(1,0,1),"rover1"), cell1, State.STILL);
+		environmentSim.add(rover1.roverSim);
+		
+		rover2 = new Rover(new RoverSimulator(new Vector3d(-1,0,-1),"rover2"), cell2, State.STILL);
+		environmentSim.add(rover2.roverSim);
+		
+		rover3 = new Rover(new RoverSimulator(new Vector3d(1,0,-1),"rover3"), cell3, State.STILL);
+		environmentSim.add(rover3.roverSim);
+		
+		rover4 = new Rover(new RoverSimulator(new Vector3d(-1,0,1),"rover4"), cell4, State.STILL);
+		environmentSim.add(rover4.roverSim);
+		
+		
 	}
-	
 	
 	
 	void startRovers() {
