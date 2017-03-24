@@ -17,12 +17,15 @@ public class Main {
 
 		System.setProperty("j3d.implicitAntialiasing", "true");
 
-		EnvironmentDescription environment = new EnvironmentSimulator();
-
 		CentralStation centralStation = CentralStation.getInstance();
+		centralStation.intializeMission();
+		
 
-		Simbad frame = new Simbad(environment, false);
+		Simbad frame = new Simbad(centralStation.environmentSim, false);
 		frame.update(frame.getGraphics());
+		
+		centralStation.runMission();
+		
 	}
 
 } 
