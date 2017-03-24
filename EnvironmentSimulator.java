@@ -12,9 +12,7 @@ import simbad.sim.Wall;
 
 public class EnvironmentSimulator extends EnvironmentDescription {
 	public EnvironmentSimulator() {
-		
-	//test rover added to the enviroment
-	add(new RoverSimulator(new Vector3d(0, 0, 0),"my robot"));
+	
 		
 	// turn on the lights
         this.light1IsOn = true;
