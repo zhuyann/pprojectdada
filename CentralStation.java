@@ -6,7 +6,6 @@ import 	java.util.TimerTask;
 
 import javax.vecmath.Vector3d;
 
-import simbad.sim.EnvironmentDescription;
 
 public class CentralStation extends Subject{
 	
@@ -16,7 +15,7 @@ public class CentralStation extends Subject{
 	BufferedImage[] pictureArray;
 	int lengthOfPictureArray;
 	Environment mainEnvironment;
-	static EnvironmentDescription environmentSim;
+	static EnvironmentSimulator environmentSim;
 	
 	Rover rover1;
 	Rover rover2;
@@ -33,7 +32,7 @@ public class CentralStation extends Subject{
 	}
 
 	// for singleton implementation
-	public static CentralStation getInstance(EnvironmentDescription environment) {
+	public static CentralStation getInstance(EnvironmentSimulator environment) {
 		environmentSim = environment;
 		return instance;
 	}
