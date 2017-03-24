@@ -16,7 +16,6 @@ public class CentralStation extends Subject{
 	BufferedImage[] pictureArray;
 	int lengthOfPictureArray;
 	Environment mainEnvironment;
-	RoverFactory roverFactory;
 	static EnvironmentDescription environmentSim;
 	
 	Rover rover1;
