@@ -6,16 +6,17 @@ import 	java.util.TimerTask;
 
 import javax.vecmath.Vector3d;
 
+import simbad.sim.EnvironmentDescription;
 
 public class CentralStation extends Subject{
 	
 	int timer = 60;
-	double currentPercentageVisited;
+	double currentPercentageVisited = 0;
 	
 	BufferedImage[] pictureArray;
 	int lengthOfPictureArray;
 	Environment mainEnvironment;
-	static EnvironmentSimulator environmentSim;
+	static EnvironmentDescription environmentSim;
 	
 	Rover rover1;
 	Rover rover2;
@@ -41,8 +42,11 @@ public class CentralStation extends Subject{
 		
 		startRovers();
 		boolean missionIncomplete = true;
+		
+		System.out.println("run");
 		while (missionIncomplete) {
-			if (mainEnvironment.percentageVisited() >= 70.0 ) {
+			System.out.println("running");
+			if (currentPercentageVisited >= 70.0 ) {
 				missionIncomplete = false;
 			}
 		}
