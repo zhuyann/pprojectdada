@@ -52,12 +52,13 @@ public class Environment {
 			} 
 		}
 	}
-
-
 	double percentageVisited() {
-		double percentage = (numberOfCoordinatesDefined-lengthOfCoordinatePool)/numberOfCoordinatesDefined * 100;
-		return percentage;
+		if (numberOfCoordinatesDefined == 0) {
+			return 0;
+		} else {
+			double percentage = (numberOfCoordinatesDefined-lengthOfCoordinatePool)/numberOfCoordinatesDefined * 100;
+			return percentage;
+		}
 	}
-
 
 }
