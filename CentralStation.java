@@ -72,7 +72,7 @@ public class CentralStation extends Subject{
 	}
 	
 	void intializeMission() {
-		Environment mainEnvironment = new Environment(10,10);
+		mainEnvironment = new Environment(10,10);
 		int lengthOfEachCell = mainEnvironment.length / 2;
 		int widthOfEachCell = mainEnvironment.width / 2;
 
