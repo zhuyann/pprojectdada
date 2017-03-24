@@ -6,10 +6,6 @@ import simbad.sim.*;
 import javax.vecmath.Vector3d;
 
 
-/**
-  Derivate your own code from this example.
- */
-
 
 public class Main {
 
