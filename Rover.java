@@ -8,19 +8,17 @@ public class Rover extends Observer{
 	String name;
 	Environment myCell;
 	State state;
-	RoverSimulator roverSim;
+	
 	BufferedImage[] pictures;
 	int numberOfPictures;
-
-	Rover(String name, Environment cell, State initialState) {
-		this.name = name;
+	
+	RoverSimulator roverSim;
+	
+	
+	public Rover(RoverSimulator roverSimulator, Environment cell, State still) {
+		roverSim = roverSimulator;
 		myCell = cell;
-		state = initialState;
-		
-		roverSim = new RoverSimulator(new Vector3d(0, 0, 0), name);
-		pictures = new BufferedImage[10];
-		numberOfPictures = 0;
-		
+		state = still;
 	}
 	
 	
