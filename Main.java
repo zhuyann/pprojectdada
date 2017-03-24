@@ -23,8 +23,8 @@ public class Main {
 		centralStation.intializeMission();
 		
 		Simbad frame = new Simbad(environment, false);
-		
 		frame.update(frame.getGraphics());
+		
 		centralStation.runMission();
 	}
 
