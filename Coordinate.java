@@ -1,5 +1,7 @@
 package rovuSystem;
 
+import javax.vecmath.Point3d;
+
 public class Coordinate {
 
 	int xValue;
@@ -13,7 +15,12 @@ public class Coordinate {
 	}
 	
 	Coordinate(int x, int y){
-		xValue = x;
-		yValue = y;	
+		this.xValue = x;
+		this.yValue = y;	
+	}
+	
+	Coordinate translate(Point3d coordinate3d) {
+		Coordinate coordinate = new Coordinate ((int)(coordinate3d.x), (int)(coordinate3d.y));
+		return coordinate;
 	}
 }
