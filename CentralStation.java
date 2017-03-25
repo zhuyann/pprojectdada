@@ -77,10 +77,10 @@ public class CentralStation extends Subject{
 		int lengthOfEachCell = mainEnvironment.length / 2;
 		int widthOfEachCell = mainEnvironment.width / 2;
 
-		Environment cell1 = new Environment(lengthOfEachCell, widthOfEachCell);
-		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell);
-		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell);
-		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell);
+		Environment cell1 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(0,0));
+		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(0,-widthOfEachCell));
+		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,-widthOfEachCell));
+		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,0));
 
 		rover1 = new Rover(new RoverSimulator(new Vector3d(1,0,1),"rover1"), cell1, State.STILL);
 		environmentSim.add(rover1.roverSim);
