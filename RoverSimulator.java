@@ -1,57 +1,104 @@
-package rovuSystem;
 
 import java.awt.image.BufferedImage;
 
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
+
+import nl.vu.cs.softmod.examples.MultiRobot.Direction;
+
 import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
 
 public class RoverSimulator extends Agent {
+	private String currentMode;
+	private int maxDistance = 4;
+	double Velocity;
 	BufferedImage[] picArray;
 	int numberOfImages;
 	BufferedImage cameraImage;
 	CameraSensor camera;
-	
-    public RoverSimulator (Vector3d position, String name) {     
-        super(position,name);
+	Vector3d initialPosition;
+	// private int maxDistance = EnvironmentSimulator.WORLD_SIZE / 2 - 1;
+
+	public RoverSimulator(Vector3d position, String name) {
+
+		super(position, name);
+		Velocity = 0.5;
+		initialPosition = position;
+		RobotFactory.addSonarBeltSensor(this, 4);
+		camera = RobotFactory.addCameraSensor(this);
+		cameraImage = camera.createCompatibleImage();
+		picArray = new BufferedImage[10];
+		numberOfImages = 0;
+
+	}
+
+	private Point3d location() {
+		Point3d loc = new Point3d();
+		this.getCoords(loc);
+		return loc;
+	}
+
+	private boolean onTheCellEdge() {
+
+		Point3d loc = location();
+		
+		
+	 return initialPosition.getX()-1 >= loc.getX() || loc.getX() >=(initialPosition.getX() + maxDistance)
+		 || initialPosition.getZ()+1 <= loc.getZ() || loc.getZ() <=(initialPosition.getZ() - maxDistance);
+
+	}
+
+	public void initBehavior() {
+		setTranslationalVelocity(Velocity);
+	}
+
+	public void performBehavior() {
         
-        RobotFactory.addSonarBeltSensor(this, 4);  
-        camera = RobotFactory.addCameraSensor(this);
-        cameraImage = camera.createCompatibleImage();
-        picArray = new BufferedImage[10];
-        numberOfImages = 0;
-    }
-    
-    public void initBehavior() {
-    	setTranslationalVelocity(0.5);
-    }
-    
-    
-    public void performBehavior() {
-        if (collisionDetected()) {
-        	
-        	//collision avoidance strategy
-            
-        } else {
-            // progress at 0.5 m/s
-            setTranslationalVelocity(0.5);
-            // frequently change orientation 
-            if ((getCounter() % 100)==0) 
-               setRotationalVelocity(Math.PI/2 * (0.5 - Math.random()));
-        }
-    }
-    
-    public void stopRover() {
-    	setTranslationalVelocity(0.0);
-        setRotationalVelocity(0);
-    }
-    
-    public void takePhoto() {
-    	 camera.copyVisionImage(cameraImage);
-    	picArray[numberOfImages] = cameraImage;
-    	numberOfImages++;
-    }
-    
+		
+		if (this.collisionDetected()) {
+			this.currentMode = "avoidObstacle";
+		} else if (onTheCellEdge()) {
+			this.currentMode = "onTheCellEdge";
+			
+		} else {
+			this.currentMode = "goAround";
+		}
+		
+
+		if (this.currentMode == "goAround") {
+			
+			this.setTranslationalVelocity(Velocity);
+
+			// frequently change orientation
+			if ((getCounter() % 100) == 0) {
+				setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
+			}
+		} else if (this.currentMode == "onTheCellEdge") {
+			// don't move
+			this.Velocity=-Velocity;
+			this.setTranslationalVelocity(Velocity);
+			// rotate only until obstacle is not there
+			
+
+		} else {
+			// don't move
+			this.setTranslationalVelocity(0);
+			// rotate only until obstacle is not there
+			setRotationalVelocity(Math.PI / 2);
+		}
+	}
+
+	public void stopRover() {
+		setTranslationalVelocity(0.0);
+		setRotationalVelocity(0);
+	}
+
+	public void takePhoto() {
+		camera.copyVisionImage(cameraImage);
+		picArray[numberOfImages] = cameraImage;
+		numberOfImages++;
+	}
 
 }
