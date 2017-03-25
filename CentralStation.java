@@ -64,6 +64,7 @@ public class CentralStation extends Subject{
 	        		currentPercentageVisited = mainEnvironment.percentageVisited();
 	        		timer = 60;
 	        	} else {
+				// stop rovers
 	        		System.out.println("Mission complete!");
 	        		System.exit(1);
 	        	}
