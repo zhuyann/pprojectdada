@@ -84,7 +84,7 @@ public class RoverSimulator extends Agent {
 				
 
 	//			if ((double)myCell.coordinatePool[i].xValue == loc.x && (double)myCell.coordinatePool[i].yValue == loc.y) {              == exactly on coordinate
-				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.2 )) { // (Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.y))) < 0.7 )) {              // close enough
+				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.2 ) && (Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.2 )) {              // close enough
 					// take photo and remove coordinate from coordinate pool
 					System.out.println("On coordinate");
 				//	takePhoto();
