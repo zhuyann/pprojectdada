@@ -2,15 +2,14 @@ package rovuSystem;
 
 import java.awt.image.BufferedImage;
 import java.util.Timer;
-import 	java.util.TimerTask;
+import java.util.TimerTask;
 
 import javax.vecmath.Vector3d;
-
 import simbad.sim.EnvironmentDescription;
 
 public class CentralStation extends Subject{
 	
-	int timer = 60;
+	int timer = 30;
 	double currentPercentageVisited = 0;
 	
 	BufferedImage[] pictureArray;
@@ -37,71 +36,80 @@ public class CentralStation extends Subject{
 		environmentSim = environment;
 		return instance;
 	}
-
-	public void runMission () {
-		
-		startRovers();
-		boolean missionIncomplete = true;
-		
-		System.out.println("run");
-		while (missionIncomplete) {
-			System.out.println("running");
-			if (currentPercentageVisited >= 70.0 ) {
-				missionIncomplete = false;
-			}
-		}
-		
-		currentPercentageVisited = mainEnvironment.percentageVisited();
-		int test = 0;
-		Timer t = new Timer();
-		t.schedule(new TimerTask() {
-	        @Override
-	        public void run() {
-	        	if (timer != 0 && currentPercentageVisited == mainEnvironment.percentageVisited()) {
-	        		timer -= 1;
-	        	} else
-	        	if (timer != 0 && currentPercentageVisited != mainEnvironment.percentageVisited()) {
-	        		currentPercentageVisited = mainEnvironment.percentageVisited();
-	        		timer = 60;
-	        	} else {
-				stopRovers();
-	        		System.out.println("Mission complete!");
-	        		System.exit(1);
-	        	}
-	        }
-	    }, 1000);
-	}
 	
-	void intializeMission() {
-		mainEnvironment = new Environment(10,10);
+	void intializeMission() {	
+		mainEnvironment = new Environment(10,10, new Coordinate(-5,-5));
 		int lengthOfEachCell = mainEnvironment.length / 2;
 		int widthOfEachCell = mainEnvironment.width / 2;
-
+				
 		Environment cell1 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(0,0));
 		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(0,-widthOfEachCell));
 		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,-widthOfEachCell));
 		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,0));
-                
-		rover1 = new Rover(new RoverSimulator(new Vector3d(-4,0,-1),"rover1"), cell1, State.STILL);
+
+		rover1 = new Rover(new RoverSimulator(new Vector3d(-4,0,-1),"rover1", cell1, mainEnvironment), cell1, State.STILL);
 		environmentSim.add(rover1.roverSim);
 		
-		rover2 = new Rover(new RoverSimulator(new Vector3d(1,0,-1),"rover2"), cell2, State.STILL);
+		rover2 = new Rover(new RoverSimulator(new Vector3d(1,0,-1),"rover2", cell2, mainEnvironment), cell2, State.STILL);
 		environmentSim.add(rover2.roverSim);
 		
-		rover3 = new Rover(new RoverSimulator(new Vector3d(-4,0,4),"rover3"), cell3, State.STILL);
+		rover3 = new Rover(new RoverSimulator(new Vector3d(-4,0,4),"rover3", cell3, mainEnvironment), cell3, State.STILL);
 		environmentSim.add(rover3.roverSim);
 		
-		rover4 = new Rover(new RoverSimulator(new Vector3d(1,0,4),"rover4"), cell4, State.STILL);
+		rover4 = new Rover(new RoverSimulator(new Vector3d(1,0,4),"rover4", cell4, mainEnvironment), cell4, State.STILL);
 		environmentSim.add(rover4.roverSim);
 		
 		cell1.defineCoordinates();
 		cell2.defineCoordinates();
 		cell3.defineCoordinates();
 		cell4.defineCoordinates();
-		
-		
+		mainEnvironment.defineCoordinates();
 	}
 	
+	public void runMission () {
+		
+		startRovers();
+		boolean missionIncomplete = true;
+		
+		System.out.println("Running");
+		
+		while (missionIncomplete) {
+			if (mainEnvironment.percentageVisited() >= 70.0 ) {
+				System.out.println("The rovers covered more than 70%, but will continue running for a while.");
+				missionIncomplete = false;
+			}
+		}
+		
+		
+		currentPercentageVisited = mainEnvironment.percentageVisited();
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+	        @Override
+	        public void run() {
+	        	if (timer != 0 && currentPercentageVisited == mainEnvironment.percentageVisited()) {
+	        		timer -= 1;
+	        		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
+	        		run();
+	        	} else
+	        	if (timer != 0 && currentPercentageVisited != mainEnvironment.percentageVisited()) {
+	        		currentPercentageVisited = mainEnvironment.percentageVisited();
+	        		timer = 30;
+	        		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
+	        		run();
+	        	} else {
+	        		stopRovers();
+	        		System.out.printf("Mission complete! \nThe rovers visited %.3f %% of the environment. \n ", currentPercentageVisited);
+	        		System.exit(0);
+	        	}
+	        }
+	    }, 1000);
+	}
 	
 	void startRovers() {
 		rover1.start();
