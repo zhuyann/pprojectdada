@@ -18,6 +18,10 @@ public class Coordinate {
 		this.xValue = x;
 		this.yValue = y;	
 	}
+	Boolean isEqual(Coordinate coordinate){
+	return this.xValue==coordinate.xValue&&this.yValue==coordinate.yValue;
+		
+	}
 	
 	Coordinate translate(Point3d coordinate3d) {
 		Coordinate coordinate = new Coordinate ((int)(coordinate3d.x), (int)(coordinate3d.y));
