@@ -3,6 +3,8 @@ package rovuSystem;
 public enum State {
 	
 	STILL, 
-	MOVING;
-`// maybe error
+	MOVING,
+	EDGE_OF_CELL,
+	AVOIDING_OBSTACLE;
+
 }
