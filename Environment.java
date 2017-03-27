@@ -43,7 +43,6 @@ public class Environment {
 			
 		} else {
 			double percentage = ((double)numberOfCoordinatesDefined-(double)lengthOfCoordinatePool)/(double)numberOfCoordinatesDefined * 100;
-			System.out.println(percentage);
 			return percentage;
 		}
 	}
