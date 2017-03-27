@@ -1,11 +1,6 @@
 package rovuSystem;
 
-
 import simbad.gui.*;
-import simbad.sim.*;
-import javax.vecmath.Vector3d;
-
-
 
 public class Main {
 
@@ -23,5 +18,4 @@ public class Main {
 		
 		centralStation.runMission();
 	}
-
-} 
+}
