@@ -31,7 +31,7 @@ public class Environment {
 
 	void removeFromCoordinatePool(Coordinate coordinate) {
 		for (int i=0; i<lengthOfCoordinatePool; i++) {
-			if (coordinatePool[i] == coordinate) {
+			if (coordinatePool[i].isEqual(coordinate)) {
 				coordinatePool[i] = new Coordinate(100,100);
 				lengthOfCoordinatePool--;
 			} 
