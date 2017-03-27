@@ -94,6 +94,11 @@ public class CentralStation extends Subject{
 		rover4 = new Rover(new RoverSimulator(new Vector3d(1,0,4),"rover4"), cell4, State.STILL);
 		environmentSim.add(rover4.roverSim);
 		
+		cell1.defineCoordinates();
+		cell2.defineCoordinates();
+		cell3.defineCoordinates();
+		cell4.defineCoordinates();
+		
 		
 	}
 	
