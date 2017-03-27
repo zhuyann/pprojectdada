@@ -63,9 +63,9 @@ public class RoverSimulator extends Agent {
 
 			
 		} else if(onTheCellEdge()) {
-		//	System.out.print(name);
-		//	System.out.println("on edge");
-	
+			System.out.print(name);
+			System.out.println("on edge");
+			stopRover();
 		}
 		
 		
