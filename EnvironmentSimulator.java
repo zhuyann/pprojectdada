@@ -1,66 +1,106 @@
 package rovuSystem;
 
-import java.awt.Color;
+import java.awt.image.BufferedImage;
 
-import javax.vecmath.Color3f;
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-import javax.vecmath.Vector3f;
 
-import simbad.sim.Box;
-import simbad.sim.EnvironmentDescription;
-import simbad.sim.Wall;
+import simbad.sim.Agent;
+import simbad.sim.CameraSensor;
+import simbad.sim.RobotFactory;
 
-public class EnvironmentSimulator extends EnvironmentDescription {
-	public EnvironmentSimulator() {
-	
-		
-	// turn on the lights
-        this.light1IsOn = true;
-        this.light2IsOn = true;
-        
-        // enable the physics engine in order to have better physics effects on the objects
-        this.setUsePhysics(true);
-        
-        // show the axes so that we know where things are
-        this.showAxis(true);
-        
-        this.setWorldSize(20);
-        
-        Wall w1 = new Wall(new Vector3d(-5, 0, 0), 10, 2, this);
-        w1.setColor(new Color3f(Color.BLUE));
-        w1.rotate90(1);
-        add(w1);
-        
-        Wall w2 = new Wall(new Vector3d(5, 0, 0), 10, 2, this);
-        w2.setColor(new Color3f(Color.GREEN));
-        w2.rotate90(1);
-        add(w2);
-        
-        Wall w3 = new Wall(new Vector3d(0, 0, 5), 10, 2, this);
-        w3.setColor(new Color3f(Color.RED));
-        add(w3);
-        
-        Wall w4 = new Wall(new Vector3d(0, 0, -5), 10, 2, this);
-        w4.setColor(new Color3f(Color.YELLOW));
-        add(w4);
-        
-        Wall roomWall1 = new Wall(new Vector3d(2, 0, -3.5), 3, 1, this);
-        roomWall1.setColor(new Color3f(Color.RED));
-        roomWall1.rotate90(1);
-        add(roomWall1);
-        
-        Wall roomWall2 = new Wall(new Vector3d(3.5, 0, -2), 3, 1, this);
-        roomWall2.setColor(new Color3f(Color.YELLOW));
-        add(roomWall2);
-        
-        Box box1 = new Box(new Vector3d(-3, 0, -3), new Vector3f(1, 1, 1), this);
-        box1.setColor(new Color3f(Color.ORANGE));
-        add(box1);
-        
-        Box box2 = new Box(new Vector3d(-3, 0, 3), new Vector3f(1, 1, 1), this);
-        box2.setColor(new Color3f(Color.ORANGE));
-        add(box2);
-        
-    }
-		
+public class RoverSimulator extends Agent {
+	private State state;
+
+	double Velocity;
+	Vector3d initialPosition;
+
+	BufferedImage[] picArray;
+	int numberOfImages;
+	BufferedImage cameraImage;
+	CameraSensor camera;
+
+	Environment myCell;
+	Environment mainEnvironment;
+	private int maxDistance;
+
+	public RoverSimulator (Vector3d position, String name, Environment cell, Environment environment){   
+		super(position,name);
+		RobotFactory.addSonarBeltSensor(this, 4);
+
+		Velocity = 0.5;
+		initialPosition = position;
+
+		picArray = new BufferedImage[10];
+		numberOfImages = 0;
+		camera = RobotFactory.addCameraSensor(this);
+		cameraImage = camera.createCompatibleImage();
+
+		myCell = cell;
+		mainEnvironment = environment; 
+		maxDistance = myCell.length-1;
+	}
+
+	private Point3d location() {
+		Point3d loc = new Point3d();
+		this.getCoords(loc);
+		return loc;
+	}
+
+	public void initBehavior() {
+		setTranslationalVelocity(1);
+	}
+
+	private boolean onTheCellEdge() {
+		Point3d loc = location();
+
+		return initialPosition.getX()-1 >= loc.getX() || loc.getX() >=(initialPosition.getX() + maxDistance)
+			|| initialPosition.getZ()+1 <= loc.getZ() || loc.getZ() <=(initialPosition.getZ() - maxDistance);
+	}
+
+	public void performBehavior() {	
+		if (onTheCellEdge()) {
+			this.state = State.EDGE_OF_CELL;
+		} else if (this.collisionDetected()) {
+			this.state = State.AVOIDING_OBSTACLE;	
+		} else {
+			this.state = State.MOVING;
+		}
+
+		if (this.state == State.MOVING) {
+			this.setTranslationalVelocity(Velocity);
+			
+			if ((getCounter() % 100) == 0) {
+				setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
+			}
+
+			Point3d loc = location();
+			for (int i = myCell.coordinatePool.length-1; i>=0; i--) {
+				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.2 ) && 
+					(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.2 )) {
+					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
+					//	takePhoto();
+					myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
+					mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
+				}
+			}
+		} else if (this.state == State.EDGE_OF_CELL) {
+			this.Velocity=-Velocity;
+			this.setTranslationalVelocity(Velocity);		
+		} else {
+			this.Velocity=-Velocity;
+			this.setTranslationalVelocity(Velocity);
+		}
+	}
+
+	public void stopRover() {
+		setTranslationalVelocity(0.0);
+		setRotationalVelocity(0);
+	}
+
+	public void takePhoto() {
+		camera.copyVisionImage(cameraImage);
+		picArray[numberOfImages] = cameraImage;
+		numberOfImages++;
+	}
 }
