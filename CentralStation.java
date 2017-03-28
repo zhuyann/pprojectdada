@@ -25,7 +25,7 @@ public class CentralStation extends Subject{
 	private static CentralStation instance = new CentralStation();
 	
 	private CentralStation() {
-		pictureArray = new BufferedImage[40];
+		pictureArray = new BufferedImage[4000];
 		lengthOfPictureArray = 0;
 		System.out.println("Central Station is initialized");
 
