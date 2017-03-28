@@ -47,10 +47,6 @@ public class EnvironmentSimulator extends EnvironmentDescription {
         roomWall1.rotate90(1);
         add(roomWall1);
         
-        Wall roomWall2 = new Wall(new Vector3d(3.5, 0, -2), 3, 1, this);
-        roomWall2.setColor(new Color3f(Color.YELLOW));
-        add(roomWall2);
-        
         Box box1 = new Box(new Vector3d(-3, 0, -3), new Vector3f(1, 1, 1), this);
         box1.setColor(new Color3f(Color.ORANGE));
         add(box1);
