@@ -86,7 +86,11 @@ public class RoverSimulator extends Agent {
 				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.2 ) && 
 					(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.2 )) {
 					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
-					takePhoto();
+					for(int count = 0; count<=4; count++) {
+						takePhoto();
+						setRotationalVelocity(Math.PI/2);	
+					}
+					System.out.println("4 photos taken");
 					myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
 					mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
 				}
@@ -158,7 +162,6 @@ public class RoverSimulator extends Agent {
 	}
 
 	public void takePhoto() {
-		System.out.println("Photo taken");
 		camera.copyVisionImage(cameraImage);
 		picArray[numberOfImages] = cameraImage;
 		numberOfImages++;
