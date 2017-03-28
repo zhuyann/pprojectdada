@@ -19,6 +19,8 @@ public class Rover extends Observer{
 		roverSim = roverSimulator;
 		myCell = cell;
 		state = still;
+		pictures = new BufferedImage[1000];
+		numberOfPictures = 0;
 	}
 	
 	
@@ -44,10 +46,9 @@ public class Rover extends Observer{
 		//send feedback to Central Station
 	}
 	
-	void takeAndSendPhotos() {
-		roverSim.takePhoto();
+	void sendPhotos() {
 		pictures = roverSim.picArray;
-		numberOfPictures = roverSim.picArray.length;
+		numberOfPictures = roverSim.numberOfImages;
 	}
 	
 
