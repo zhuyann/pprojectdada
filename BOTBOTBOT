@@ -57,34 +57,41 @@ public class RoverSimulator extends Agent {
 	public void performBehavior() {
         
 		
-		if (onTheCellEdge()) {
-			this.currentMode = "onTheCellEdge";
-		} else if (this.collisionDetected()) {
-			this.currentMode = "avoidObstacle";
-			
-		} else {
-			this.currentMode = "goAround";
-		}
-		
+			setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
 
-		if (this.currentMode == "goAround") {
-			
-			this.setTranslationalVelocity(Velocity);
-
-			// frequently change orientation
-			if ((getCounter() % 100) == 0) {
-				setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
+			if (onTheCellEdge()) {
+				this.state = State.EDGE_OF_CELL;
+			} else if (bumpers.oneHasHit()) {
+				switch (state) {
+				case AVOIDING_OBSTACLE:
+					this.state = State.MOVING;
+					break;
+				default:
+					this.state = State.AVOIDING_OBSTACLE;
+					break;
+				}
+			} else {
+				this.state = State.MOVING;
 			}
-		} else if (this.currentMode == "onTheCellEdge") {
-			// don't move
-			this.Velocity=-Velocity;
-			this.setTranslationalVelocity(Velocity);
-			
-			
 
-		} else {
-			this.Velocity=-Velocity;
-			this.setTranslationalVelocity(Velocity);
+			if (this.state == State.MOVING) {
+				this.setTranslationalVelocity(Velocity);
+
+				Point3d loc = location();
+				for (int i = myCell.coordinatePool.length-1; i>=0; i--) {
+					if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].getXValue()) - Math.abs(loc.x))) < 0.2 ) && 
+						(Math.abs((Math.abs((double)myCell.coordinatePool[i].getYValue()) - Math.abs(loc.z))) < 0.2 )) {
+						// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
+						//	takePhoto();
+						myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
+						mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
+					}
+				}
+			} else {
+				this.Velocity = -Velocity;
+				this.setTranslationalVelocity(Velocity);
+			}
+
 		}
 	}
 
