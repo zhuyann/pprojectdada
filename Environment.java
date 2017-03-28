@@ -8,6 +8,8 @@ public class Environment {
 	int lengthOfCoordinatePool;			 // = unvisited coordinates
 	Coordinate startingPoint;
 	Coordinate[] coordinatePool;
+	public boolean lampOn;
+
 
 	Environment(int length, int width, Coordinate startingPoint) {
 		this.length = length;
@@ -17,6 +19,7 @@ public class Environment {
 		numberOfCoordinatesDefined = (length-1)*(width-1);
 		lengthOfCoordinatePool = numberOfCoordinatesDefined;
 		coordinatePool = new Coordinate[lengthOfCoordinatePool];
+		lampOn = false;
 	}
 
 	void defineCoordinates() {
@@ -33,20 +36,19 @@ public class Environment {
 		for (int i = 0; i < lengthOfCoordinatePool; i++) {
 			if (coordinatePool[i].isEqual(coordinate)) {
 				coordinatePool[i] = coordinatePool[lengthOfCoordinatePool-1];
+				coordinatePool[lengthOfCoordinatePool-1] = new Coordinate(Integer.MAX_VALUE, Integer.MAX_VALUE);
 				lengthOfCoordinatePool--;
 			}
 		}
 	}
-	
 	double percentageVisited() {
 		if (numberOfCoordinatesDefined == 0) {
-			return 0.0;
+			return 0;
 			
 		} else {
 			double percentage = ((double)numberOfCoordinatesDefined-(double)lengthOfCoordinatePool)/(double)numberOfCoordinatesDefined * 100;
-			System.out.println(percentage);
+			System.out.printf("%.3f \n",percentage);
 			return percentage;
 		}
 	}
-
 }
