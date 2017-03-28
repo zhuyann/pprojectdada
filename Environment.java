@@ -30,13 +30,14 @@ public class Environment {
 	}
 
 	void removeFromCoordinatePool(Coordinate coordinate) {
-		for (int i=0; i<lengthOfCoordinatePool; i++) {
+		for (int i = 0; i < lengthOfCoordinatePool; i++) {
 			if (coordinatePool[i].isEqual(coordinate)) {
-				coordinatePool[i] = new Coordinate(100,100);
+				coordinatePool[i] = coordinatePool[lengthOfCoordinatePool-1];
 				lengthOfCoordinatePool--;
-			} 
+			}
 		}
 	}
+	
 	double percentageVisited() {
 		if (numberOfCoordinatesDefined == 0) {
 			return 0.0;
