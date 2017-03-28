@@ -80,13 +80,14 @@ public class CentralStation extends Subject{
 			}
 		}
 		
-		
 		currentPercentageVisited = mainEnvironment.percentageVisited();
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 	        @Override
 	        public void run() {
-	        	if (timer != 0 && currentPercentageVisited == mainEnvironment.percentageVisited()) {
+	        	if(currentPercentageVisited == 100.0) {
+	        		finishMission();
+	        	} else if (timer != 0 && currentPercentageVisited == mainEnvironment.percentageVisited()) {
 	        		timer -= 1;
 	        		try {
 						Thread.sleep(1000);
@@ -103,10 +104,8 @@ public class CentralStation extends Subject{
 					}
 	        		run();
 	        	} else {
-	        		stopRovers();
-	        		System.out.printf("Mission complete! \nThe rovers visited %.3f %% of the environment. \n ", currentPercentageVisited);
-	        		System.exit(0);
-	        	}
+	        		finishMission();
+	        	} 
 	        }
 	    }, 1000);
 	}
@@ -123,6 +122,17 @@ public class CentralStation extends Subject{
 		rover2.stop();
 		rover3.stop();
 		rover4.stop();
+	}
+	
+	void finishMission(){
+		stopRovers();
+
+		System.out.printf("Mission complete! \nThe rovers visited %.3f %% of the environment. \n ", currentPercentageVisited);
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+		}
+		System.exit(0);
 	}
 	
 	void savePicture() {
