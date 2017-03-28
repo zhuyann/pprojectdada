@@ -44,11 +44,11 @@ public class Environment {
 	double percentageVisited() {
 		if (numberOfCoordinatesDefined == 0) {
 			return 0;
-			
 		} else {
-			double percentage = ((double)numberOfCoordinatesDefined-(double)lengthOfCoordinatePool)/(double)numberOfCoordinatesDefined * 100;
-			System.out.printf("%.3f \n",percentage);
-			return percentage;
+			double percentage = (((double)(numberOfCoordinatesDefined-17)-(double)(lengthOfCoordinatePool-17))/(double)(numberOfCoordinatesDefined-17) * 100);
+		//	System.out.println(lengthOfCoordinatePool-17);
+			System.out.printf("%.3f \n",percentage+(17/81*percentage));
+			return percentage+(17/81*percentage);
 		}
 	}
 }
