@@ -135,7 +135,12 @@ public class CentralStation extends Subject{
 		System.exit(0);
 	}
 	
-	void savePicture() {
+	void savePictures() {
+		rover1.sendPhotos();
+		rover2.sendPhotos();
+		rover3.sendPhotos();
+		rover4.sendPhotos();
+		
 		System.arraycopy(rover1.pictures, 0, pictureArray, 0, rover1.numberOfPictures);
 		lengthOfPictureArray = rover1.numberOfPictures;
 		
@@ -147,6 +152,17 @@ public class CentralStation extends Subject{
 		
 		System.arraycopy(rover4.pictures, 0, pictureArray, lengthOfPictureArray, rover4.numberOfPictures);
 		lengthOfPictureArray += rover4.numberOfPictures;
+		
+		for(int i=0 ; i<lengthOfPictureArray; i++){
+			File outputFile = new File ("pic"+ i + ".png");
+			try {
+				ImageIO.write(pictureArray[i], "png", outputFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Pictures have been saved.");
 	}
 	
 	void handleError() {
