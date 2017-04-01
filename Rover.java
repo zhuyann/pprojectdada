@@ -1,7 +1,9 @@
 package rovuSystem;
 
+
+
 import java.awt.image.BufferedImage;
-import javax.vecmath.Vector3d;
+
 
 public class Rover extends Observer{
 	
@@ -15,23 +17,22 @@ public class Rover extends Observer{
 	RoverSimulator roverSim;
 	
 	
-	public Rover(RoverSimulator roverSimulator, Environment cell, State still) {
+	public Rover(RoverSimulator roverSimulator, Environment cell, State still,CentralStation centralStation) {
+	      this.subject = centralStation;
+	      this.subject.attach(this);
 		roverSim = roverSimulator;
-		myCell = cell;
 		state = still;
-		pictures = new BufferedImage[1000];
-		numberOfPictures = 0;
 	}
 	
-	
-	void update() {
+	 @Override
+	void stopRovers() {
+		if(state.equals("stop")){
+			roverSim.stopRover();
+		}
+		
 		//implement instructions from the Central Station
 	}
 	
-	void start() {
-		roverSim.initBehavior();
-		state = State.MOVING;
-	}
 	
 	void stop() {
 		roverSim.stopRover();
@@ -46,9 +47,10 @@ public class Rover extends Observer{
 		//send feedback to Central Station
 	}
 	
-	void sendPhotos() {
+	void takeAndSendPhotos() {
+		roverSim.takePhoto();
 		pictures = roverSim.picArray;
-		numberOfPictures = roverSim.numberOfImages;
+		numberOfPictures = roverSim.picArray.length;
 	}
 	
 
