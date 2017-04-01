@@ -28,8 +28,6 @@ public class CentralStation extends Subject{
 	private static CentralStation instance = new CentralStation();
 	
 	private CentralStation() {
-		pictureArray = new BufferedImage[4000];
-		lengthOfPictureArray = 0;
 		System.out.println("Central Station is initialized");
 
 	}
@@ -132,32 +130,6 @@ public class CentralStation extends Subject{
 	}
 	
 	void savePictures() {
-		rover1.sendPhotos();
-		rover2.sendPhotos();
-		rover3.sendPhotos();
-		rover4.sendPhotos();
-		
-		System.arraycopy(rover1.pictures, 0, pictureArray, 0, rover1.numberOfPictures);
-		lengthOfPictureArray = rover1.numberOfPictures;
-		
-		System.arraycopy(rover2.pictures, 0, pictureArray, lengthOfPictureArray, rover2.numberOfPictures);
-		lengthOfPictureArray += rover2.numberOfPictures;
-		
-		System.arraycopy(rover3.pictures, 0, pictureArray, lengthOfPictureArray, rover3.numberOfPictures);
-		lengthOfPictureArray += rover3.numberOfPictures;
-		
-		System.arraycopy(rover4.pictures, 0, pictureArray, lengthOfPictureArray, rover4.numberOfPictures);
-		lengthOfPictureArray += rover4.numberOfPictures;
-		
-		for(int i=0 ; i<lengthOfPictureArray; i++){
-			File outputFile = new File ("pic"+ i + ".png");
-			try {
-				ImageIO.write(pictureArray[i], "png", outputFile);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		System.out.println("Pictures have been saved.");
 	}
 	
