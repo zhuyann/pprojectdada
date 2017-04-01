@@ -49,17 +49,20 @@ public class CentralStation extends Subject{
 		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(0,-widthOfEachCell));
 		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,-widthOfEachCell));
 		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,0));
-
-		rover1 = new Rover(new RoverSimulator(new Vector3d(-4,0,-1),"rover1", cell1, mainEnvironment), cell1, State.STILL);
+                rover1 = new Rover(new RoverSimulator(new Vector3d(-4, 0, -1), "rover1", cell1, mainEnvironment), cell1,
+				State.STILL,instance);
+		rover2 = new Rover(new RoverSimulator(new Vector3d(1, 0, -1), "rover2", cell2, mainEnvironment), cell2,
+				State.STILL,instance);
+		rover3 = new Rover(new RoverSimulator(new Vector3d(-4, 0, 4), "rover3", cell3, mainEnvironment), cell3,
+				State.STILL,instance);
+		rover4 = new Rover(new RoverSimulator(new Vector3d(1, 0, 4), "rover4", cell4, mainEnvironment), cell4,
+				State.STILL,instance);
 		environmentSim.add(rover1.roverSim);
 		
-		rover2 = new Rover(new RoverSimulator(new Vector3d(1,0,-1),"rover2", cell2, mainEnvironment), cell2, State.STILL);
 		environmentSim.add(rover2.roverSim);
 		
-		rover3 = new Rover(new RoverSimulator(new Vector3d(-4,0,4),"rover3", cell3, mainEnvironment), cell3, State.STILL);
 		environmentSim.add(rover3.roverSim);
 		
-		rover4 = new Rover(new RoverSimulator(new Vector3d(1,0,4),"rover4", cell4, mainEnvironment), cell4, State.STILL);
 		environmentSim.add(rover4.roverSim);
 		
 		cell1.defineCoordinates();
@@ -71,7 +74,7 @@ public class CentralStation extends Subject{
 	
 	public void runMission () {
 		
-		startRovers();
+		
 		boolean missionIncomplete = true;
 		
 		System.out.println("Running");
@@ -113,22 +116,12 @@ public class CentralStation extends Subject{
 	    }, 1000);
 	}
 	
-	void startRovers() {
-		rover1.start();
-		rover2.start();
-		rover3.start();
-		rover4.start();
-	}
-	
-	void stopRovers() {
-		rover1.stop();
-		rover2.stop();
-		rover3.stop();
-		rover4.stop();
-	}
+
+
 	
 	void finishMission(){
-		stopRovers();
+		setState("stop");
+				
 
 		System.out.printf("Mission complete! \nThe rovers visited %.3f %% of the environment. \n ", currentPercentageVisited);
 		try {
