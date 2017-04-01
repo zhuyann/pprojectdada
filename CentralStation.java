@@ -28,6 +28,8 @@ public class CentralStation extends Subject{
 	private static CentralStation instance = new CentralStation();
 	
 	private CentralStation() {
+		pictureArray = new BufferedImage[4000];
+		lengthOfPictureArray = 0;
 		System.out.println("Central Station is initialized");
 
 	}
@@ -47,7 +49,8 @@ public class CentralStation extends Subject{
 		Environment cell2 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(0,-widthOfEachCell));
 		Environment cell3 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,-widthOfEachCell));
 		Environment cell4 = new Environment(lengthOfEachCell, widthOfEachCell, new Coordinate(-lengthOfEachCell,0));
-                rover1 = new Rover(new RoverSimulator(new Vector3d(-4, 0, -1), "rover1", cell1, mainEnvironment), cell1,
+		
+        rover1 = new Rover(new RoverSimulator(new Vector3d(-4, 0, -1), "rover1", cell1, mainEnvironment), cell1,
 				State.STILL,instance);
 		rover2 = new Rover(new RoverSimulator(new Vector3d(1, 0, -1), "rover2", cell2, mainEnvironment), cell2,
 				State.STILL,instance);
@@ -72,10 +75,7 @@ public class CentralStation extends Subject{
 	
 	public void runMission () {
 		
-		
 		boolean missionIncomplete = true;
-		
-		System.out.println("Running");
 		
 		while (missionIncomplete) {
 			if (mainEnvironment.percentageVisited() >= 70.0 ) {
@@ -115,13 +115,13 @@ public class CentralStation extends Subject{
 	}
 	
 
-
-	
 	void finishMission(){
-		setState("stop");
-				
-
 		System.out.printf("Mission complete! \nThe rovers visited %.3f %% of the environment. \n ", currentPercentageVisited);
+		rover1.stopRovers();
+		rover2.stopRovers();
+		rover3.stopRovers();
+		rover4.stopRovers();
+		savePictures();
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
