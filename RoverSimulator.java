@@ -1,8 +1,10 @@
 package rovuSystem;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-import javax.media.j3d.Sensor;
+import javax.imageio.ImageIO;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
@@ -23,7 +25,8 @@ public class RoverSimulator extends Agent {
 
 	Environment myCell;
 	Environment mainEnvironment;
-	private int maxDistance;
+	private double maxDistance;
+	boolean stop;
 
 	public RoverSimulator (Vector3d position, String name, Environment cell, Environment environment){   
 		super(position,name);
@@ -39,7 +42,8 @@ public class RoverSimulator extends Agent {
 
 		myCell = cell;
 		mainEnvironment = environment; 
-		maxDistance = myCell.length-1;
+		maxDistance = 5-1.6;
+		stop = false;
 	}
 
 	private Point3d location() {
@@ -55,8 +59,8 @@ public class RoverSimulator extends Agent {
 	private boolean onTheCellEdge() {
 		Point3d loc = location();
 
-		return initialPosition.getX()-1 >= loc.getX() || loc.getX() >=(initialPosition.getX() + maxDistance)
-			|| initialPosition.getZ()+1 <= loc.getZ() || loc.getZ() <=(initialPosition.getZ() - maxDistance);
+		return initialPosition.getX()-0.1 >= loc.getX() || loc.getX() >=(initialPosition.getX() + maxDistance)
+				|| initialPosition.getZ()+0.1 <= loc.getZ() || loc.getZ() <=(initialPosition.getZ() - maxDistance);
 	}
 
 	public void performBehavior() {	
@@ -67,26 +71,31 @@ public class RoverSimulator extends Agent {
 			this.state = State.EDGE_OF_CELL;
 		} else if (this.collisionDetected()) {
 			this.state = State.AVOIDING_OBSTACLE;	
-		} else {
+		} else if(stop) { 
+			this.state = State.STILL;
+		}	else {
 			this.state = State.MOVING;
-		}
-		
-		
-		if(this.state == State.FOLLOWING_LAMP) {
-		//	followLamp();
+		} 
+
+
+		if (this.state == State.STILL) {
+			stopRover();
+		} else if(this.state == State.FOLLOWING_LAMP) {
+			//	followLamp();
 		} else if (this.state == State.MOVING) {
 			this.setTranslationalVelocity(Velocity);
-			
+
 			if ((getCounter() % 100) == 0) {
 				setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
 			}
 
 			Point3d loc = location();
 			for (int i = myCell.coordinatePool.length-1; i>=0; i--) {
-				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.2 ) && 
-					(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.2 )) {
+				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.1 ) && 
+						(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.1 )) {
 					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
 					takePhoto();
+					System.out.println("4 photos taken");
 					myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
 					mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
 				}
@@ -99,59 +108,11 @@ public class RoverSimulator extends Agent {
 			this.setTranslationalVelocity(Velocity);
 		}
 	}
-/*	
+
 	public void followLamp() {
 
-        Sensor minPositiveAngle = new Sensor();
-        Sensor minNegativeAngle = new Sensor();
-        if (collisionDetected()) moveToStartPosition();
-        if (bumpers.oneHasHit()) {
-            setTranslationalVelocity(-0.1);
-            setRotationalVelocity(0.1 * Math.random());
+	}
 
-        } else {
-            for (int i = 0; i < sonars.getNumSensors(); i++) {
-                if (sonars.hasHit(i)) {
-                    if (i <= minPositiveAngle.number + 2) {
-                        minPositiveAngle.angle = sonars.getSensorAngle(i) + (2 * Math.PI / sonars.getNumSensors());
-                        minPositiveAngle.measurement = sonars.getMeasurement(i);
-                    }
-                    if ((i - sonars.getNumSensors()) % sonars.getNumSensors() >= minNegativeAngle.number - 2) {
-                        minNegativeAngle.angle = (sonars.getSensorAngle(i) - 2 * Math.PI - (2 * Math.PI / sonars.getNumSensors())) % (2 * Math.PI);
-                        minNegativeAngle.measurement = sonars.getMeasurement(i);
-                    }
-                }
-            }
-            if (Math.abs(minNegativeAngle.angle) >= Math.abs(minPositiveAngle.angle)) {
-                minAngle = minNegativeAngle;
-            } else {
-                minAngle = minPositiveAngle;
-            }
-
-            double nextVel = MAX_VELOCITY;
-            double nextAngVel = 0;
-
-            //if (minAngle.angle != 0) {
-            double maxHappiness = 0;
-
-            for (double i = 0.001; i < MAX_VELOCITY; i += MAX_VELOCITY / 10) {
-                for (double j = -MAX_ANGULAR_VELOCITY; j < MAX_ANGULAR_VELOCITY; j += MAX_ANGULAR_VELOCITY / 10) {
-                    double happiness = happinessFunction(i, j, 0.1, 5, 17);
-                    if (happiness > maxHappiness) {
-                        maxHappiness = happiness;
-                        nextVel = i;
-                        nextAngVel = j;
-                    }
-                }
-            }
-            //}
-
-            setRotationalVelocity(nextAngVel);
-            setTranslationalVelocity(nextVel);
-        }
-    }
-	
-*/
 	public void stopRover() {
 		setTranslationalVelocity(0.0);
 		setRotationalVelocity(0);
