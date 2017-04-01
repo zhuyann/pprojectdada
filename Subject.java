@@ -1,36 +1,35 @@
 package rovuSystem;
 
-public abstract class Subject {
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Subject {
 	
-	Observer[] observers;
-	int numberOfObservers;
+   private List<Observer> observers = new ArrayList<Observer>();
+   private String state;
+
+   public String getState() {
+      return state;
+   }
+
+   public void setState(String string) {
+      this.state = string;
+      notifyAllObservers();
+   }
+
+   public void attach(Observer observer){
+      observers.add(observer);		
+   }
+
+   public void notifyAllObservers(){
+      for (Observer observer : observers) {
+         observer.stopRovers();
+      }
+   } 	
+
 	
 	
-	Subject() {
-		numberOfObservers = 0;
-		observers = new Observer[numberOfObservers];
-	}
-	
-	void attach(Observer ob) {
-		observers[numberOfObservers] = ob;
-		numberOfObservers++;
-	}
-	
-	void detach(Observer ob) {
-		for (int i = 0; i < numberOfObservers; i++) {
-			if (observers[i] == ob) {
-				for (int j = i+1; j < numberOfObservers; j++) {
-					observers[i] = observers[j];
-					i++;
-				} 
-				
-				numberOfObservers--;
-			}
-		}
-	}
-	
-	void notifyAllObservers() {
-		//send signal to observers
-	}
+
 
 }
