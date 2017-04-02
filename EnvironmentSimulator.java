@@ -23,6 +23,8 @@ public class EnvironmentSimulator extends EnvironmentDescription {
         this.showAxis(true);
         
         this.setWorldSize(10);
+		
+	light1SetPosition(3, .6f, 3);    // place the light 
         
         Wall w1 = new Wall(new Vector3d(-5, 0, 0), 10, 2, this);
         w1.setColor(new Color3f(Color.BLUE));
