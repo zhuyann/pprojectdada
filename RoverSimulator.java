@@ -95,7 +95,7 @@ public class RoverSimulator extends Agent {
 						(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.1 )) {
 					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
 					takePhoto();
-					System.out.println("4 photos taken");
+					System.out.println("New point scanned");
 					myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
 					mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
 				}
