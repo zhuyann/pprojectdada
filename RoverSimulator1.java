@@ -12,7 +12,7 @@ import simbad.sim.Agent;
 import simbad.sim.CameraSensor;
 import simbad.sim.RobotFactory;
 
-public class RoverSimulator extends Agent {
+public class RoverSimulator1 extends Agent {
 	private State state;
 
 	double Velocity;
@@ -28,7 +28,7 @@ public class RoverSimulator extends Agent {
 	private double maxDistance;
 	boolean stop;
 
-	public RoverSimulator (Vector3d position, String name, Environment cell, Environment environment){   
+	public RoverSimulator1 (Vector3d position, String name, Environment cell, Environment environment){   
 		super(position,name);
 		RobotFactory.addSonarBeltSensor(this, 4);
 
@@ -81,7 +81,7 @@ public class RoverSimulator extends Agent {
 		if (this.state == State.STILL) {
 			stopRover();
 		} else if(this.state == State.FOLLOWING_LAMP) {
-			//	followLamp();
+			followLamp();
 		} else if (this.state == State.MOVING) {
 			this.setTranslationalVelocity(Velocity);
 
@@ -94,7 +94,10 @@ public class RoverSimulator extends Agent {
 				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.1 ) && 
 						(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.1 )) {
 					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
+					for (int count = 0; count<4; count++) {
 					takePhoto();
+					setRotationalVelocity(Math.PI / 2);
+					}
 					System.out.println("New point scanned");
 					myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
 					mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
@@ -110,7 +113,7 @@ public class RoverSimulator extends Agent {
 	}
 
 	public void followLamp() {
-
+		System.out.println("Following the lamp");
 	}
 
 	public void stopRover() {
@@ -130,8 +133,6 @@ public class RoverSimulator extends Agent {
 		try {
 			ImageIO.write(pic, "png", outputFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 }
