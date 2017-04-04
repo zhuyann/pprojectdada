@@ -109,7 +109,7 @@ public class RoverSimulator extends Agent {
 	}
 
 	public void initBehavior() {
-		setTranslationalVelocity(1);
+		System.out.println("I am alive");
 	}
 
 	private boolean onTheCellEdge() {
