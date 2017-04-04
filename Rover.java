@@ -25,10 +25,6 @@ public class Rover extends Observer{
 		roverSim.performBehavior();
 	}
 
-	void communicateWithTheCS() {
-		//send feedback to Central Station
-	}
-
 	void sendPhotos() {
 		roverSim.takePhoto();
 		pictures = roverSim.picArray;
@@ -37,8 +33,10 @@ public class Rover extends Observer{
 
 	void stopRovers() {
 		state = State.STILL;
-		roverSim.stop = true;
-		roverSim.performBehavior();
+		if(subject.getState().contentEquals("stop")) {
+			roverSim.stop = true;
+			roverSim.performBehavior();
+		}
 
 	}
 
