@@ -15,7 +15,7 @@ import simbad.sim.RobotFactory;
 import simbad.sim.LightSensor;
 import simbad.sim.RangeSensorBelt;
 
-public class RoverSimulatorLamp extends Agent {
+public class RoverSimulator extends Agent {
 	private State state;
 
 	double Velocity;
@@ -57,7 +57,7 @@ public class RoverSimulatorLamp extends Agent {
         }
     }
 
-	public RoverSimulatorLamp (Vector3d position, String name, Environment cell, Environment environment){   
+	public RoverSimulator (Vector3d position, String name, Environment cell, Environment environment){   
 		super(position,name);
 		RobotFactory.addSonarBeltSensor(this, 4);
 
@@ -123,19 +123,24 @@ public class RoverSimulatorLamp extends Agent {
 		if(myCell.lampOn){
 			this.state = State.FOLLOWING_LAMP;
 		}
-		else if (onTheCellEdge()) {
+		if (onTheCellEdge()) {
 			this.state = State.EDGE_OF_CELL;
 		} else if (this.collisionDetected()) {
 			this.state = State.AVOIDING_OBSTACLE;	
-		} else {
+		} else if(stop) { 
+			this.state = State.STILL;
+		}	else {
 			this.state = State.MOVING;
-		}
-		
-		if(this.state == State.FOLLOWING_LAMP) {
+		} 
+
+
+		if (this.state == State.STILL) {
+			stopRover();
+		} else if(this.state == State.FOLLOWING_LAMP) {
 			followLamp();
 		} else if (this.state == State.MOVING) {
 			this.setTranslationalVelocity(Velocity);
-			
+
 			if ((getCounter() % 100) == 0) {
 				setRotationalVelocity(Math.PI / 2 * (0.5 - Math.random()));
 			}
@@ -143,10 +148,13 @@ public class RoverSimulatorLamp extends Agent {
 			Point3d loc = location();
 			for (int i = myCell.coordinatePool.length-1; i>=0; i--) {
 				if ((Math.abs((Math.abs((double)myCell.coordinatePool[i].xValue) - Math.abs(loc.x))) < 0.1 ) && 
-					(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.1 )) {
-					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool		
-						takePhoto();
-					System.out.println("4 photos taken");
+						(Math.abs((Math.abs((double)myCell.coordinatePool[i].yValue) - Math.abs(loc.z))) < 0.1 )) {
+					// take photo and remove coordinate from coordinate pool if rover is close to coordinate from coordinate pool
+					for (int count = 0; count<4; count++) {
+					takePhoto();
+					setRotationalVelocity(Math.PI / 2);
+					}
+					System.out.println("New point scanned");
 					myCell.removeFromCoordinatePool(myCell.coordinatePool[i]);
 					mainEnvironment.removeFromCoordinatePool(mainEnvironment.coordinatePool[i]);
 				}
@@ -224,7 +232,7 @@ public class RoverSimulatorLamp extends Agent {
         if (Math.abs(rrlum - rlum) + Math.abs(rrlum - llum) + Math.abs(rrlum - rllum) < 0.1) {
             moveToStartPosition();
         }
-        //setRotationalVelocity((llum - rlum) *  Math.PI);
+
         double desiredRotationalVelocity;
         if ((llum > rllum && llum > rrlum && rlum > rrlum && rlum > rllum)) { //front
             desiredRotationalVelocity = (llum - rlum) * Math.PI / 4;
