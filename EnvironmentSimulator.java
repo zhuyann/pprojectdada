@@ -23,8 +23,8 @@ public class EnvironmentSimulator extends EnvironmentDescription {
         this.showAxis(true);
         
         this.setWorldSize(10);
-		
-	light1SetPosition(3, .6f, 3);    // place the light 
+        
+   //     light1SetPosition(3, .6f, 3);
         
         Wall w1 = new Wall(new Vector3d(-5, 0, 0), 10, 2, this);
         w1.setColor(new Color3f(Color.BLUE));
@@ -44,18 +44,22 @@ public class EnvironmentSimulator extends EnvironmentDescription {
         w4.setColor(new Color3f(Color.YELLOW));
         add(w4);
      
-        Wall roomWall1 = new Wall(new Vector3d(2, 0, -3.5), 3, 1, this);
+        Wall roomWall1 = new Wall(new Vector3d(1, 0, -3.5), 3, 1, this);
         roomWall1.setColor(new Color3f(Color.RED));
         roomWall1.rotate90(1);
         add(roomWall1);
+        
+  //      Wall roomWall2 = new Wall(new Vector3d(3.5, 0, -2), 3, 1, this);
+  //      roomWall2.setColor(new Color3f(Color.YELLOW));
+  //      add(roomWall2);
         
         Box box1 = new Box(new Vector3d(-3, 0, -3), new Vector3f(1, 1, 1), this);
         box1.setColor(new Color3f(Color.ORANGE));
         add(box1);
         
-        Box box2 = new Box(new Vector3d(-3, 0, 3), new Vector3f(1, 1, 1), this);
-        box2.setColor(new Color3f(Color.ORANGE));
-        add(box2);
+   //     Box box2 = new Box(new Vector3d(-3, 0, 3), new Vector3f(1, 1, 1), this);
+   //     box2.setColor(new Color3f(Color.ORANGE));
+   //     add(box2);
         
     }	
 }
